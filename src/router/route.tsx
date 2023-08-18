@@ -1,79 +1,37 @@
-import { ReactElement } from 'react'
-import { ScreenPath } from '../../types/type/ScreenPath'
-import { SubAppPath } from '../../types/type/SubAppPath'
-import useAppStateStore from '../../context/useAppStateStore'
-import { shallow } from 'zustand/shallow'
-import { Text } from 'react-native'
+import React, { ReactElement, useContext } from 'react'
+import { RouterContext } from './router'
 
-interface RouteProps {
-	path: ScreenPath | SubAppPath
+
+interface ScreenRouteProps<T> {
+	path: T
 	component: ReactElement
 	authSafe?: boolean
-	proPlan?: boolean
+	gated?: boolean
+    fallback?: boolean
 }
 
-interface ScreenRouteProps {
-	path: ScreenPath
-	component: ReactElement
-	authSafe?: boolean
-	proPlan?: boolean
-}
+const Route = () => {}
 
-interface SubAppRouteProps {
-	path: SubAppPath
-	component: ReactElement
-	authSafe?: boolean
-	proPlan?: boolean
-}
-const Route = () => {
-
-}
-
-const Screen = ({
+const Screen = <T,>({
 	component,
 	path,
 	authSafe = false,
-	proPlan = false,
-}: ScreenRouteProps) => {
-	const { signedIn } = useAppStateStore(
-		state => ({
-			signedIn: state.signedIn,
-		}),
-		shallow
-	)
+	gated = false,
+    fallback = false,
+}: ScreenRouteProps<T>) => {
+
+    const { isSignedIn, setScreen, isGateOpen } = useContext(RouterContext)
+
 
 	// Any other restrictive props should be added here ( purchase gated etc )
-	if (!authSafe && !proPlan) return <>{component}</>
-	else if (authSafe && !proPlan) return <>{signedIn ? component : null}</>
-	else if (authSafe && proPlan)
-		return <>{signedIn && proPlan ? component : null}</>
-	else if (!authSafe && proPlan) return <>{proPlan ? component : null}</>
-	else return <Text>Something went wrong.</Text>
-}
-
-const SubApp = ({
-	component,
-	path,
-	authSafe = false,
-	proPlan = false,
-}: SubAppRouteProps) => {
-	const { signedIn } = useAppStateStore(
-		state => ({
-			signedIn: state.signedIn,
-		}),
-		shallow
-	)
-
-	// Any other restrictive props should be added here ( purchase gated etc )
-	if (!authSafe && !proPlan) return <>{component}</>
-	else if (authSafe && !proPlan) return <>{signedIn ? component : null}</>
-	else if (authSafe && proPlan)
-		return <>{signedIn && proPlan ? component : null}</>
-	else if (!authSafe && proPlan) return <>{proPlan ? component : null}</>
-	else return <Text>Something went wrong.</Text>
+	if (!authSafe && !gated) return <>{component}</>
+	else if (authSafe && !gated) return <>{isSignedIn ? component : null}</>
+	else if (authSafe && gated)
+		return <>{isSignedIn && gated ? component : null}</>
+	else if (!authSafe && gated) return <>{gated ? component : null}</>
+	else return null
 }
 
 Route.Screen = Screen
-Route.SubApp = SubApp
 
 export default Route

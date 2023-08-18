@@ -1,47 +1,42 @@
 import React, { 
+    createContext,
     ReactElement, 
-    useEffect, 
-    useLayoutEffect,
     useState } from 'react'
 
 interface RouterProps {
 	children: ReactElement[]
-    authSafe?: boolean
-    signedIn: boolean
+    isSignedIn?: boolean
+    isGateOpen?: boolean
+    routes: string[]
 }
+
+export const RouterContext = createContext()
 
 const Router = () => {}
 
-const Screens = ({ children, authSafe, signedIn }: RouterProps) => {
-
-    // const arr = ["e", "b", "t"] as const
-    // type paths = typeof arr[number]
-    // let frank: paths = 'e'
+const Screens = ({ children, routes, isGateOpen, isSignedIn }: RouterProps) => {
 
     const [screen, setScreen] = useState()
 
-    useLayoutEffect( () => {
-
-    }, [signedIn])
-
-    useEffect(() => {
-        if (!authSafe || (signedIn && (screen === 'signIn' || screen === 'signUp'))) {
-            setScreen('dashboard')
-        } else if ( authSafe && !signedIn && screen !== 'signIn' && screen !== 'signUp') {
-            setScreen('signIn')
-        }
-    }, [signedIn])
-
 	const len = children.length
+    const routeCollectionAsConst = [...routes] as const
+    type possibleRoutes = typeof routeCollectionAsConst[number]
 
 	for (let i = 0; i < len; i++) {
 		if (children[i].props.path === screen) {
-			return children[i]
+            const Result = children[i]
+
+            if(Result.props.gated)
+            if(Result.props.authSafe)
+            //return get the fallback component
+            //also add a errorScreen
+			return <RouterContext.Provider value={{isGateOpen, isSignedIn, setScreen}}>
+                {<Result<possibleRoutes>/>}
+            </RouterContext.Provider>
 		}
 	}
 	return <></>
 }
-
 
 Router.Screens = Screens
 
