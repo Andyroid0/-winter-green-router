@@ -1,14 +1,18 @@
 {
-  "name": "cavern",
+  "name": "winter-green",
   "version": "1.0.0",
   "description": "A simple router for react and react-native.",
-  "main": "dist/index.js",
+  "main": "dist/main.js",
+  "module": "dist/module.js",
+  "types": "dist/types.d.ts",
+  "source": "src/index.tsx",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "parcel watch",
+    "build": "parcel build"
   },
   "repository": {
     "type": "git",
-    "url": "''"
+    "url": "https://github.com/Andyroid0/cavern"
   },
   "author": "Andrew Valley",
   "license": "ISC",
