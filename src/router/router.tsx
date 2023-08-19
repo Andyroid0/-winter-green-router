@@ -6,7 +6,7 @@ import React, {
 interface RouterProps {
 	children: ReactElement[]
     isSignedIn?: boolean
-    isGateOpen?: boolean
+    isGated?: boolean
     routes: string[]
     ErrorView?: ReactElement
     Default?: ReactElement
@@ -16,7 +16,7 @@ export const RouterContext = createContext()
 
 const Router = () => {}
 
-const Screens = ({ children, routes, isGateOpen, isSignedIn, ErrorView, Default }: RouterProps) => {
+const Screens = ({ children, routes, isGated, isSignedIn, ErrorView, Default }: RouterProps) => {
 
     const [screen, setScreen] = useState()
 
@@ -28,16 +28,16 @@ const Screens = ({ children, routes, isGateOpen, isSignedIn, ErrorView, Default 
 
 		if (children[i].props.path === screen) {
             const Result = children[i]
-            const gated = Result.props.gated
+            const gateSafe = Result.props.gateSafe
             const authSafe = Result.props.authSafe
 
-            const isUnrestricted = (!authSafe && !gated)
+            const isUnrestricted = (!authSafe && !gateSafe)
 
-            const isAuthSafeOnly = (authSafe && !gated)
+            const isAuthSafeOnly = (authSafe && !gateSafe)
 
-            const isGateSafeOnly = (!authSafe && gated)
+            const isGateSafeOnly = (!authSafe && gateSafe)
 
-            const isAuthSafeAndGated = (authSafe && gated)
+            const isAuthSafeAndGated = (authSafe && gateSafe)
 
 
             if ( isUnrestricted ) {
@@ -47,10 +47,10 @@ const Screens = ({ children, routes, isGateOpen, isSignedIn, ErrorView, Default 
                 return isSignedIn ? <Result<possibleRoutes>/> : Default ?? null
             }
             else if ( isAuthSafeAndGated ) {
-                return isSignedIn && isGateOpen ? <Result<possibleRoutes>/> : ErrorView ?? null
+                return isSignedIn && isGated ? <Result<possibleRoutes>/> : ErrorView ?? null
             }
             else if ( isGateSafeOnly ) {
-                return isGateOpen ? <Result<possibleRoutes>/> : ErrorView ?? null
+                return isGated ? <Result<possibleRoutes>/> : ErrorView ?? null
             }
             else return null
 

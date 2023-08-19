@@ -1,5 +1,5 @@
 {
-  "name": "winter-green",
+  "name": "@winter-green/router",
   "version": "1.0.0",
   "description": "A simple router for react and react-native.",
   "main": "dist/main.js",

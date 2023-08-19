@@ -4,7 +4,7 @@ interface ScreenRouteProps<T> {
 	path: T
 	component: ReactElement
 	authSafe?: boolean
-	gated?: boolean
+	gateSafe?: boolean
     fallback?: boolean
 }
 
@@ -15,7 +15,7 @@ const Screen = <T,>({
 	component,
 	path,
 	authSafe = false,
-	gated = false,
+	gateSafe = false,
     fallback = false,
 }: ScreenRouteProps<T>) => {
 
