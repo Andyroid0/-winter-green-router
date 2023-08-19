@@ -8,13 +8,6 @@ interface ScreenRouteProps<T> {
     fallback?: boolean
 }
 
-interface ErrorViewProps<T> {
-	message: T
-	component: ReactElement
-	authSafe?: boolean
-	gated?: boolean
-    fallback?: boolean
-}
 
 const Route = () => {}
 
@@ -26,7 +19,6 @@ const Screen = <T,>({
     fallback = false,
 }: ScreenRouteProps<T>) => {
 
-
 	// // Any other restrictive props should be added here ( purchase gated etc )
 	// if (!authSafe && !gated) return <>{component}</>
 	// else if (authSafe && !gated) return <>{isSignedIn ? component : null}</>
@@ -37,12 +29,6 @@ const Screen = <T,>({
 	return component
 }
 
-const ErrorView = ({ component }: Partial<ScreenRouteProps<never>>) => {
-
-	return component
-}
-
 Route.Screen = Screen
-Route.ErrorView = ErrorView
 
 export default Route
