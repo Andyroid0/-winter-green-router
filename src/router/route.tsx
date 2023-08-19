@@ -1,9 +1,15 @@
-import React, { ReactElement, useContext } from 'react'
-import { RouterContext } from './router'
-
+import React, { ReactElement } from 'react'
 
 interface ScreenRouteProps<T> {
 	path: T
+	component: ReactElement
+	authSafe?: boolean
+	gated?: boolean
+    fallback?: boolean
+}
+
+interface ErrorViewProps<T> {
+	message: T
 	component: ReactElement
 	authSafe?: boolean
 	gated?: boolean
@@ -20,18 +26,23 @@ const Screen = <T,>({
     fallback = false,
 }: ScreenRouteProps<T>) => {
 
-    const { isSignedIn, setScreen, isGateOpen } = useContext(RouterContext)
 
+	// // Any other restrictive props should be added here ( purchase gated etc )
+	// if (!authSafe && !gated) return <>{component}</>
+	// else if (authSafe && !gated) return <>{isSignedIn ? component : null}</>
+	// else if (authSafe && gated)
+	// 	return <>{isSignedIn && gated ? component : null}</>
+	// else if (!authSafe && gated) return <>{gated ? component : null}</>
+	// else return null
+	return component
+}
 
-	// Any other restrictive props should be added here ( purchase gated etc )
-	if (!authSafe && !gated) return <>{component}</>
-	else if (authSafe && !gated) return <>{isSignedIn ? component : null}</>
-	else if (authSafe && gated)
-		return <>{isSignedIn && gated ? component : null}</>
-	else if (!authSafe && gated) return <>{gated ? component : null}</>
-	else return null
+const ErrorView = ({ component }: Partial<ScreenRouteProps<never>>) => {
+
+	return component
 }
 
 Route.Screen = Screen
+Route.ErrorView = ErrorView
 
 export default Route
