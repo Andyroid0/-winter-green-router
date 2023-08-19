@@ -9,7 +9,7 @@ interface ScreenRouteProps<T> {
 }
 
 
-const Route = () => {}
+export const Route = () => {}
 
 const Screen = <T,>({
 	component,
@@ -19,16 +19,8 @@ const Screen = <T,>({
     fallback = false,
 }: ScreenRouteProps<T>) => {
 
-	// // Any other restrictive props should be added here ( purchase gated etc )
-	// if (!authSafe && !gated) return <>{component}</>
-	// else if (authSafe && !gated) return <>{isSignedIn ? component : null}</>
-	// else if (authSafe && gated)
-	// 	return <>{isSignedIn && gated ? component : null}</>
-	// else if (!authSafe && gated) return <>{gated ? component : null}</>
-	// else return null
 	return component
 }
 
 Route.Screen = Screen
 
-export default Route

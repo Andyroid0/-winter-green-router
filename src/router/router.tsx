@@ -14,7 +14,7 @@ interface RouterProps {
 
 export const RouterContext = createContext()
 
-const Router = () => {}
+export const Router = () => {}
 
 const Screens = ({ children, routes, isGated, isSignedIn, ErrorView, Default }: RouterProps) => {
 
@@ -60,5 +60,3 @@ const Screens = ({ children, routes, isGated, isSignedIn, ErrorView, Default }: 
 }
 
 Router.Screens = Screens
-
-export default Router
