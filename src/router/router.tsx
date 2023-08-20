@@ -4,10 +4,9 @@ import React, {
     useState } from 'react'
 
 interface RouterProps {
-	children: ReactElement[]
+	children: ReactElement[] | ReactElement | undefined
     isSignedIn?: boolean
     isGated?: boolean
-    routes: string[]
     ErrorView?: ReactElement
     Default?: ReactElement
 }
@@ -16,13 +15,11 @@ export const RouterContext = createContext()
 
 export const Router = () => {}
 
-const Screens = ({ children, routes, isGated, isSignedIn, ErrorView, Default }: RouterProps) => {
+const Screens = ({ children, isGated, isSignedIn, ErrorView, Default }: RouterProps) => {
 
     const [screen, setScreen] = useState()
 
 	const len = children.length
-    const routeCollectionAsConst = [...routes] as const
-    type possibleRoutes = typeof routeCollectionAsConst[number]
 
 	for (let i = 0; i < len; i++) {
 
@@ -41,16 +38,16 @@ const Screens = ({ children, routes, isGated, isSignedIn, ErrorView, Default }: 
 
 
             if ( isUnrestricted ) {
-                return <Result<possibleRoutes>/>
+                return <Result/>
             }
             else if ( isAuthSafeOnly ) {
-                return isSignedIn ? <Result<possibleRoutes>/> : Default ?? null
+                return isSignedIn ? <Result/> : Default ?? null
             }
             else if ( isAuthSafeAndGated ) {
-                return isSignedIn && isGated ? <Result<possibleRoutes>/> : ErrorView ?? null
+                return isSignedIn && isGated ? <Result/> : ErrorView ?? null
             }
             else if ( isGateSafeOnly ) {
-                return isGated ? <Result<possibleRoutes>/> : ErrorView ?? null
+                return isGated ? <Result/> : ErrorView ?? null
             }
             else return null
 

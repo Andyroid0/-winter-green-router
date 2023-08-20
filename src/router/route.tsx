@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react'
-
 interface ScreenRouteProps<T> {
 	path: T
 	component: ReactElement
 	authSafe?: boolean
 	gateSafe?: boolean
     fallback?: boolean
+    parent?: ReactElement
 }
 
 
