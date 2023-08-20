@@ -1,23 +1,31 @@
 import React, {
     createContext,
     ReactElement,
+    useEffect,
     useState } from 'react'
 
-interface RouterProps {
+interface RouterProps<T> {
 	children: ReactElement[] | ReactElement | undefined
     isSignedIn?: boolean
     isGated?: boolean
     ErrorView?: ReactElement
     Default?: ReactElement
+    path: T
 }
 
 export const RouterContext = createContext()
 
 export const Router = () => {}
 
-const Screens = ({ children, isGated, isSignedIn, ErrorView, Default }: RouterProps) => {
+const Screens = <T,>({ children, isGated, isSignedIn, ErrorView, Default, path }: RouterProps<T>) => {
 
-    const [screen, setScreen] = useState()
+    const [screen, setScreen] = useState<T|null>()
+
+    useEffect( () => {
+        if( screen !== path ) {
+            setScreen(path)
+        }
+    }, [path])
 
 	const len = children.length
 
