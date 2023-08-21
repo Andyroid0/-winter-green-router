@@ -29,7 +29,7 @@ function App() {
           Learn React
         </a>
       </header>
-      
+
       <ScreenRouter
         path={path}
       >

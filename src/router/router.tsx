@@ -1,4 +1,5 @@
 import React, {
+    FC,
     ReactElement,
     useEffect,
     useState } from 'react'
@@ -24,7 +25,7 @@ const Screens = <T,>({ children, isGated, isSignedIn, ErrorView, Default, path }
         }
     }, [path])
 
-    if( !children ) return
+    if( !children ) return <></>
 
 	const len = children.length
 
@@ -43,20 +44,35 @@ const Screens = <T,>({ children, isGated, isSignedIn, ErrorView, Default, path }
 
             const isAuthSafeAndGated = (authSafe && gateSafe)
 
+            const HandleErrorView = () => {
+
+                if ( ErrorView === undefined ) {
+                    return <></>
+                }
+                else return ErrorView
+            }
+
+            const HandleDefault = () => {
+
+                if ( Default === undefined ) {
+                    return <></>
+                }
+                else return Default
+            }
 
             if ( isUnrestricted ) {
                 return Result
             }
             else if ( isAuthSafeOnly ) {
-                return isSignedIn ? Result : Default ?? null
+                return isSignedIn ? Result : HandleDefault()
             }
             else if ( isAuthSafeAndGated ) {
-                return isSignedIn && isGated ? Result : ErrorView ?? null
+                return isSignedIn && isGated ? Result : HandleErrorView()
             }
             else if ( isGateSafeOnly ) {
-                return isGated ? Result : ErrorView ?? null
+                return isGated ? Result : HandleErrorView()
             }
-            else return null
+            else return <></>
 
 		}
 	}

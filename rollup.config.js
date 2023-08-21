@@ -22,7 +22,7 @@ export default [
 			{
 				file: pkg.module,
 				format: "esm",
-				sourcemap: true,
+				sourcemap: true
 			},
 			/* {
 				file: 'dist/bundle.min.js',
@@ -31,11 +31,12 @@ export default [
 				plugins: [terser()]
 			} */
 		],
+		external: [...Object.keys(pkg.peerDependencies || {})],
 		plugins: [
 			peerDepsExternal(),
 			resolve(),
 			commonjs(),
-			typescript({ tsconfig: "./tsconfig.json" }),
+			typescript({ tsconfig: "./tsconfig.json", exclude: ["../tester"] }),
 			postcss(),
 			terser()
 		]
@@ -45,5 +46,5 @@ export default [
 		output: [{ file: "dist/index.d.ts", format: "esm" }],
 		plugins: [dts()],
 		external: [/\.(css|less|scss)$/],
-	},
+	}
 ];
