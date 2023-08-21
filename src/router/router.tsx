@@ -1,11 +1,10 @@
 import React, {
-    createContext,
     ReactElement,
     useEffect,
     useState } from 'react'
 
 interface RouterProps<T> {
-	children: ReactElement[] | ReactElement | undefined
+	children: ReactElement[] | undefined
     isSignedIn?: boolean
     isGated?: boolean
     ErrorView?: ReactElement
@@ -13,9 +12,7 @@ interface RouterProps<T> {
     path: T
 }
 
-export const RouterContext = createContext()
-
-export const Router = () => {}
+const Router = () => {}
 
 const Screens = <T,>({ children, isGated, isSignedIn, ErrorView, Default, path }: RouterProps<T>) => {
 
@@ -27,12 +24,14 @@ const Screens = <T,>({ children, isGated, isSignedIn, ErrorView, Default, path }
         }
     }, [path])
 
+    if( !children ) return
+
 	const len = children.length
 
 	for (let i = 0; i < len; i++) {
 
 		if (children[i].props.path === screen) {
-            const Result = children[i]
+            const Result = children[i] as ReactElement
             const gateSafe = Result.props.gateSafe
             const authSafe = Result.props.authSafe
 
@@ -46,16 +45,16 @@ const Screens = <T,>({ children, isGated, isSignedIn, ErrorView, Default, path }
 
 
             if ( isUnrestricted ) {
-                return <Result/>
+                return Result
             }
             else if ( isAuthSafeOnly ) {
-                return isSignedIn ? <Result/> : Default ?? null
+                return isSignedIn ? Result : Default ?? null
             }
             else if ( isAuthSafeAndGated ) {
-                return isSignedIn && isGated ? <Result/> : ErrorView ?? null
+                return isSignedIn && isGated ? Result : ErrorView ?? null
             }
             else if ( isGateSafeOnly ) {
-                return isGated ? <Result/> : ErrorView ?? null
+                return isGated ? Result : ErrorView ?? null
             }
             else return null
 
@@ -65,3 +64,5 @@ const Screens = <T,>({ children, isGated, isSignedIn, ErrorView, Default, path }
 }
 
 Router.Screens = Screens
+
+export default Router

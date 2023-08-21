@@ -9,7 +9,7 @@ interface ScreenRouteProps<T> {
 }
 
 
-export const Route = () => {}
+const Route = () => {}
 
 const Screen = <T,>({
 	component,
@@ -24,3 +24,4 @@ const Screen = <T,>({
 
 Route.Screen = Screen
 
+export default Route
