@@ -1,8 +1,5 @@
 import React, {
-    FC,
-    ReactElement,
-    useEffect,
-    useState } from 'react'
+    ReactElement } from 'react'
 
 interface RouterProps<T> {
 	children: ReactElement[] | undefined
@@ -17,31 +14,20 @@ const Router = () => {}
 
 const Screens = <T,>({ children, isGated, isSignedIn, ErrorView, Default, path }: RouterProps<T>) => {
 
-    const [screen, setScreen] = useState<T|null>()
-
-    useEffect( () => {
-        if( screen !== path ) {
-            setScreen(path)
-        }
-    }, [path])
-
     if( !children ) return <></>
 
 	const len = children.length
 
 	for (let i = 0; i < len; i++) {
 
-		if (children[i].props.path === screen) {
+		if (children[i].props.path === path) {
+
             const Result = children[i] as ReactElement
             const gateSafe = Result.props.gateSafe
             const authSafe = Result.props.authSafe
-
             const isUnrestricted = (!authSafe && !gateSafe)
-
             const isAuthSafeOnly = (authSafe && !gateSafe)
-
             const isGateSafeOnly = (!authSafe && gateSafe)
-
             const isAuthSafeAndGated = (authSafe && gateSafe)
 
             const HandleErrorView = () => {
@@ -60,20 +46,14 @@ const Screens = <T,>({ children, isGated, isSignedIn, ErrorView, Default, path }
                 else return Default
             }
 
-            if ( isUnrestricted ) {
-                return Result
-            }
-            else if ( isAuthSafeOnly ) {
+            if ( isUnrestricted ) return Result
+            else if ( isAuthSafeOnly ) 
                 return isSignedIn ? Result : HandleDefault()
-            }
-            else if ( isAuthSafeAndGated ) {
+            else if ( isAuthSafeAndGated ) 
                 return isSignedIn && isGated ? Result : HandleErrorView()
-            }
-            else if ( isGateSafeOnly ) {
+            else if ( isGateSafeOnly ) 
                 return isGated ? Result : HandleErrorView()
-            }
             else return <></>
-
 		}
 	}
 	return <></>
