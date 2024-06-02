@@ -10,7 +10,8 @@
     "dist"
   ],
   "scripts": {
-    "rollup": "rollup -c"
+    "rollup": "rollup -c",
+    "publish": "npm publish --access public"
   },
   "repository": {
     "type": "git",

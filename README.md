@@ -1,9 +1,9 @@
 # Wintergreen-router 🌲
  
 
-A simple router from react and react-native.
+A simple router for react and react-native.
 
-NOTE: Right now it's equipped to handle screens. Path and Page handling to follow.
+NOTE: Right now it's equipped to handle views only. Stacks, Screens, Paths, and Page handling to follow.
 
 Twitter/X= @_andrewvalley
 
